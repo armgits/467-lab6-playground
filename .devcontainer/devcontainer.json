@@ -1,0 +1,43 @@
+{
+	"dockerFile": "Dockerfile",
+	"remoteUser": "terp-dev",
+	"workspaceMount": "source=${localEnv:HOME}/enre467_ws,target=/home/terp-dev/enre467_ws,type=bind",
+	"workspaceFolder": "/home/terp-dev/enre467_ws",
+	"runArgs": [
+		"--network=host",
+		"--cap-add=SYS_PTRACE",
+		"--security-opt=seccomp:unconfined",
+		"--security-opt=apparmor:unconfined",
+		"--volume=/tmp/.X11-unix:/tmp/.X11-unix",
+		"--volume=/mnt/wslg:/mnt/wslg",
+		"--ipc=host",
+    	"--gpus=all",
+		"--volume=/dev:/dev",
+		"--ulimit=rtprio=99",
+		"--ulimit=rttime=-1",
+		// uncomment to use intel iGPU
+		"--device=/dev/dri"
+	],
+	"containerEnv": {
+		"DISPLAY": "${localEnv:DISPLAY}", // Needed for GUI try ":0" for windows
+		"XDG_RUNTIME_DIR": "${localEnv:XDG_RUNTIME_DIR}",
+		"PULSE_SERVER": "${localEnv:PULSE_SERVER}",
+		"LIBGL_ALWAYS_SOFTWARE": "1" // Needed for software rendering of opengl
+	},
+	// Set *default* container specific settings.json values on container create.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-vscode.cpptools",
+				"ms-vscode.cpptools-extension-pack",
+				"ms-iot.vscode-ros",
+				"ms-python.python",
+				"cschlosser.doxdocgen",
+				"redhat.vscode-yaml",
+				"twxs.cmake",
+				"ms-vscode.cmake-tools",
+				"yzhang.markdown-all-in-one"
+			]
+		}
+	}
+}
