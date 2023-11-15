@@ -1,4 +1,26 @@
 #include "../include/square.hpp"
+#include <tf2_ros/transform_listener.h>
+#include <geometry_msgs/TransformStamped.h>
+
+geometry_msgs::TransformStamped GetRobotBasePose()
+{
+    ros::NodeHandle robot_base_tf_subscriber;
+
+    tf2_ros::Buffer tfBuffer;
+    tf2_ros::TransformListener tfListener(tfBuffer);
+
+    geometry_msgs::TransformStamped transformStamped;
+
+    try{
+      transformStamped = tfBuffer.lookupTransform("base_link", "world",
+                               ros::Time(0));
+    }
+    catch (tf2::TransformException &ex) {
+      ROS_WARN("%s",ex.what());
+    }
+
+    return transformStamped;
+}
 
 bool MoveBy(double x, double y, double z,
                  moveit::planning_interface::MoveGroupInterface &arm_move_group)
@@ -53,43 +75,28 @@ void DrawASquareXY(double side_length,
     MoveBy(0.125, 0.1, -0.2, arm_move_group);
 
     std::string reference_frame {arm_move_group.getPlanningFrame()};
-    geometry_msgs::Pose start_pose {arm_move_group.getCurrentPose().pose};
+    geometry_msgs::Pose current_pose {arm_move_group.getCurrentPose().pose};
 
     std::vector<geometry_msgs::Pose> waypoints;
+    double radius {(side_length * sqrt(2)) / 2};
 
-    // Waypoint to first corner
-    geometry_msgs::Pose point1 {start_pose};
-    point1.position.x -= side_length / 2;
-    point1.position.y += side_length / 2;
-    waypoints.push_back(point1);
+    // Generate waypoints for a square trajectory
+    for (double theta {0}; theta <= 2*M_PI; theta += M_PI/180) {
+        geometry_msgs::Pose point_on_square {current_pose};
 
-    // Waypoint to second corner
-    geometry_msgs::Pose point2 {point1};
-    point2.position.x += side_length;
-    waypoints.push_back(point2);
+        double x_component {std::clamp(radius * cos(theta), -side_length/2, side_length/2)};
+        double y_component {std::clamp(radius * sin(theta), -side_length/2, side_length/2)};
 
-    // Waypoint to third corner
-    geometry_msgs::Pose point3 {point2};
-    point3.position.y -= side_length;
-    waypoints.push_back(point3);
+        point_on_square.position.x = current_pose.position.x + x_component;
+        point_on_square.position.y = current_pose.position.y + y_component;
 
-    // Waypoint to the fourth corner
-    geometry_msgs::Pose point4 {point3};
-    point4.position.x -= side_length;
-    waypoints.push_back(point4);
+        waypoints.push_back(point_on_square);
+    }
 
-    // Waypoint back to the first corner to close the shape
-    geometry_msgs::Pose return_point1 {point4};
-    return_point1.position.y += side_length;
-    waypoints.push_back(return_point1);
+    // Return back to the square center
+    waypoints.push_back(current_pose);
 
-    // Waypoint back to square center point
-    geometry_msgs::Pose return_center_point {return_point1};
-    return_center_point.position.x += side_length / 2;
-    return_center_point.position.y -= side_length / 2;
-    waypoints.push_back(return_center_point);
-
-    auto square_trajectory {ArmController::planCartesianPath(start_pose,
+    auto square_trajectory {ArmController::planCartesianPath(current_pose,
                                                              waypoints,
                                                              reference_frame,
                                                              arm_move_group)};
@@ -130,43 +137,28 @@ void DrawASquareXZ(double side_length,
     MoveBy(0.125, 0.1, -0.13, arm_move_group);
 
     std::string reference_frame {arm_move_group.getPlanningFrame()};
-    geometry_msgs::Pose start_pose {arm_move_group.getCurrentPose().pose};
+    geometry_msgs::Pose current_pose {arm_move_group.getCurrentPose().pose};
 
     std::vector<geometry_msgs::Pose> waypoints;
+    double radius {(side_length * sqrt(2)) / 2};
 
-    // Waypoint to first corner
-    geometry_msgs::Pose point1 {start_pose};
-    point1.position.x -= side_length / 2;
-    point1.position.z -= side_length / 2;
-    waypoints.push_back(point1);
+    // Generate waypoints for a square trajectory
+    for (double theta {0}; theta <= 2*M_PI; theta += M_PI/180) {
+        geometry_msgs::Pose point_on_square {current_pose};
 
-    // Waypoint to second corner
-    geometry_msgs::Pose point2 {point1};
-    point2.position.x += side_length;
-    waypoints.push_back(point2);
+        double x_component {std::clamp(radius * cos(theta), -side_length/2, side_length/2)};
+        double z_component {std::clamp(radius * sin(theta), -side_length/2, side_length/2)};
 
-    // Waypoint to third corner
-    geometry_msgs::Pose point3 {point2};
-    point3.position.z += side_length;
-    waypoints.push_back(point3);
+        point_on_square.position.x = current_pose.position.x + x_component;
+        point_on_square.position.z = current_pose.position.z + z_component;
 
-    // Waypoint to the fourth corner
-    geometry_msgs::Pose point4 {point3};
-    point4.position.x -= side_length;
-    waypoints.push_back(point4);
+        waypoints.push_back(point_on_square);
+    }
 
-    // Waypoint back to the first corner to close the shape
-    geometry_msgs::Pose return_point1 {point4};
-    return_point1.position.z -= side_length;
-    waypoints.push_back(return_point1);
+    // Return back to the square center
+    waypoints.push_back(current_pose);
 
-    // Waypoint back to square center point
-    geometry_msgs::Pose return_center_point {return_point1};
-    return_center_point.position.x += side_length / 2;
-    return_center_point.position.z += side_length / 2;
-    waypoints.push_back(return_center_point);
-
-    auto square_trajectory {ArmController::planCartesianPath(start_pose,
+    auto square_trajectory {ArmController::planCartesianPath(current_pose,
                                                              waypoints,
                                                              reference_frame,
                                                              arm_move_group)};
@@ -198,6 +190,10 @@ int main(int argc, char **argv)
 
     // Create instance of MoveGroupInterface for given joint group
     moveit::planning_interface::MoveGroupInterface arm_move_group("manipulator");
+
+    // Setup a transform listener to get the pose of the robot base link
+    tf2_ros::Buffer tfBuffer;
+    tf2_ros::TransformListener tfListener(tfBuffer);
 
     //Write your code for following the square trajectory here.
 
