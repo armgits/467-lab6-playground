@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.14)
 project(ur3e_trajectory)
 
-add_compile_options(-std=c++11)
+add_compile_options(-std=c++17)
 add_compile_options(-lpthread)
 
 find_package(catkin REQUIRED COMPONENTS	roscpp moveit_wrapper)
