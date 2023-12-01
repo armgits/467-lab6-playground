@@ -75,37 +75,41 @@ void DrawASquareXY(double side_length, const geometry_msgs::Vector3& center_poin
     }
 
     // Adjust end-effector to the square center to begin drawing at
-    MoveBy(0.125, 0.1, -0.2, arm_move_group);
+    auto current_point {arm_move_group.getCurrentPose().pose.position};
+    auto adjust_x {center_point.x - current_point.x};
+    auto adjust_y {center_point.y - current_point.y};
+    auto adjust_z {center_point.z - current_point.z};
+    MoveBy(adjust_x, adjust_y, adjust_z, arm_move_group);
 
-    std::string reference_frame {arm_move_group.getPlanningFrame()};
-    geometry_msgs::Pose current_pose {arm_move_group.getCurrentPose().pose};
+    auto reference_frame {arm_move_group.getPlanningFrame()};
+    auto start_pose {arm_move_group.getCurrentPose().pose};
 
     std::vector<geometry_msgs::Pose> waypoints;
     double radius {(side_length * sqrt(2)) / 2};
 
     // Generate waypoints for a square trajectory
     for (double theta {0}; theta <= 2*M_PI; theta += M_PI/180) {
-        geometry_msgs::Pose point_on_square {current_pose};
+        geometry_msgs::Pose point_on_square {start_pose};
 
         double x_component {std::clamp(radius * cos(theta), -side_length/2, side_length/2)};
         double y_component {std::clamp(radius * sin(theta), -side_length/2, side_length/2)};
 
-        point_on_square.position.x = current_pose.position.x + x_component;
-        point_on_square.position.y = current_pose.position.y + y_component;
+        point_on_square.position.x = start_pose.position.x + x_component;
+        point_on_square.position.y = start_pose.position.y + y_component;
 
         waypoints.push_back(point_on_square);
     }
 
     // Return back to the square center
-    waypoints.push_back(current_pose);
+    waypoints.push_back(start_pose);
 
-    auto square_trajectory {ArmController::planCartesianPath(current_pose,
+    auto square_trajectory {ArmController::planCartesianPath(start_pose,
                                                              waypoints,
                                                              reference_frame,
                                                              arm_move_group)};
 
     ROS_INFO("Trying to draw a square on XY plane...");
-
+    // Draw the square
     n.setParam("/record_pose", true);
     arm_move_group.execute(square_trajectory);
     n.setParam("/record_pose", false);
