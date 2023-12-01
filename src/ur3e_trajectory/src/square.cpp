@@ -49,7 +49,7 @@ void MoveBy(double x, double y, double z,
     arm_move_group.execute(trajectory);
 }
 
-void DrawASquareXY(double side_length,
+void DrawASquareXY(double side_length, const geometry_msgs::Vector3& center_point,
                  MoveitPlanning::PlanningOptions &planning_options,
                  moveit::planning_interface::MoveGroupInterface &arm_move_group)
 {
@@ -111,7 +111,7 @@ void DrawASquareXY(double side_length,
     n.setParam("/record_pose", false);
 }
 
-void DrawASquareXZ(double side_length,
+void DrawASquareXZ(double side_length, const geometry_msgs::Vector3& center_point,
                  MoveitPlanning::PlanningOptions &planning_options,
                  moveit::planning_interface::MoveGroupInterface &arm_move_group)
 {
