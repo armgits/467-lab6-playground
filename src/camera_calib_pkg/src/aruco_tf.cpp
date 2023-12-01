@@ -414,6 +414,16 @@ void ArucoTF::verifyCalibration(const int &marker_id) {
     mean_error += pose_error;
   }
 
+  // Covariance matrix
+  Eigen::MatrixXf F;
+
+  for (auto pose_error: pose_errors) {
+    F << pose_error;
+  }
+
+  // auto covariance {(F - mean_error * )}
+
+  //  TODO: CONTINUE FROM HERE
 }
 
 int main(int argc, char **argv) {
