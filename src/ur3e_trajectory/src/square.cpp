@@ -17,8 +17,8 @@ geometry_msgs::Transform GetRobotBasePose()
     geometry_msgs::TransformStamped transformStamped;
 
     try{
-      transformStamped = tfBuffer.lookupTransform("base_link", "world",
-                               ros::Time(0));
+      transformStamped = tfBuffer.lookupTransform("world", "base_link",
+                               ros::Time::now(), ros::Duration(1.0));
     }
     catch (tf2::TransformException &ex) {
       ROS_WARN("%s",ex.what());
