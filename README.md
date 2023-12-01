@@ -1,4 +1,4 @@
-# Lab_7
+# Lab 6
 
 ## Introduction
 
@@ -88,7 +88,7 @@ If you want to work on your own computer, install docker and portainer (optional
 
     Note: ROS drivers and description packages are located in another folder (`~/ros_ur_driver`) in the docker image. They are already compiled and sourced in the `.bashrc` file. These packages were separated to minimize the build time for your code.
 
-1. Tmux is a tool which is used to split a terminal window into multiple terminals. Tmux is already installed in your docker container. To split the terminal vertically, type tmux and press enter, this will open the current terminal with tmux, then click on the terminal you want to split and press `Ctrl + A` to select that terminal and press `V` to split it vertically. To split the terminal horizontally, click on the terminal you want to split and press `Ctrl + A` to select it and then press `B` to split it horizontally to do it manually. 
+1. Tmux is a tool which is used to split a terminal window into multiple terminals. Tmux is already installed in your docker container. To split the terminal vertically, type tmux and press enter, this will open the current terminal with tmux, then click on the terminal you want to split and press `Ctrl + A` to select that terminal and press `V` to split it vertically. To split the terminal horizontally, click on the terminal you want to split and press `Ctrl + A` to select it and then press `B` to split it horizontally to do it manually.
 An example command to split into four terminals using terminal commands is below:
 
     ```bash
@@ -108,7 +108,7 @@ An example command to split into four terminals using terminal commands is below
     ```bash
     roslaunch ur3e_moveit_mrc ur3e_moveit.launch sim:=true
     ```
-    
+
     This also spawns a back wall obstacle that is needed for safety reasons. However, if the wall has to be removed, it can be done by adding `spawn_wall:=false` to the end of the command.
 
 1. The `moveit_tutorial` package has sample code for performing three tasks: 1. Move the robot to a joint goal, 2. Move the robot to a pose goal and 3. Move the robot from one point to another in a cartesian path. You can refer to the `tutorial.cpp` in the `moveit_tutorial` package for the sample code. This sample code uses the helper functions from `moviet_wrapper` package. In a new terminal, run the following command to run this sample code:
@@ -117,12 +117,12 @@ An example command to split into four terminals using terminal commands is below
     rosrun moveit_tutorial tutorial
     ```
 
-1. You will use these helper functions in your code to move your robot in square and circle trajectories. A package for this lab is provided to you and the name of this package is `ur3e_trajectory`. Add your code to the files `square.cpp` and `circle.cpp` for square and circle trajectories. 
+1. You will use these helper functions in your code to move your robot in square and circle trajectories. A package for this lab is provided to you and the name of this package is `ur3e_trajectory`. Add your code to the files `square.cpp` and `circle.cpp` for square and circle trajectories.
 
     Run the following command to run your code for square or circle trajectories:
 
     ``` bash
-    rosrun ur3e_trajectory square 
+    rosrun ur3e_trajectory square
     ```
 
     >Note: Replace square with circle if you want to run your circle code.
@@ -168,7 +168,7 @@ roslaunch ur3e_setup ur3e_bringup_mrc.launch robot_ip:=192.168.77.22 kinematics_
 ```
 **Attention**: If there are any warnings or errors in the output, stop immidately and contact your TA or the lab manager.
 
-5. In one of the tmux termninals run 
+5. In one of the tmux termninals run
 
 ```bash
 rostopic list
