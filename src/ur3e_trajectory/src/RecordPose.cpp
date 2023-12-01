@@ -11,7 +11,7 @@ int main(int argc, char **argv)
     std::string out_path = "/home/terp-dev/enre467_ws/src/ur3e_trajectory/square_trajectory.csv";
 
     bool record_pose;
-    int flag = 0;   
+    int flag = 0;
 
     moveit::planning_interface::MoveGroupInterface arm_move_group("manipulator");
 
@@ -29,7 +29,7 @@ int main(int argc, char **argv)
     eef_file.open(out_path);
 
     while(record_pose == true) {
-        
+
         current_pose = arm_move_group.getCurrentPose().pose;
         eef_file << current_pose.position.x << "," << current_pose.position.y << "," << current_pose.position.z << std::endl;
         nh.getParam("/record_pose", record_pose);
@@ -39,4 +39,3 @@ int main(int argc, char **argv)
     eef_file.close();
 
 }
-
