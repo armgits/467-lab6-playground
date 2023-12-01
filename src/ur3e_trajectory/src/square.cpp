@@ -202,10 +202,6 @@ int main(int argc, char **argv)
     // Create instance of MoveGroupInterface for given joint group
     moveit::planning_interface::MoveGroupInterface arm_move_group("manipulator");
 
-    // Setup a transform listener to get the pose of the robot base link
-    tf2_ros::Buffer tfBuffer;
-    tf2_ros::TransformListener tfListener(tfBuffer);
-
     //Write your code for following the square trajectory here.
 
     auto robot_position {GetRobotBasePose().translation};
