@@ -381,6 +381,26 @@ void ArucoTF::verifyCalibration(const int &marker_id) {
 
     // TODO: Calculate the 7 dimensional error (x,y,z,qx,qy,qz,qw) between the two
 
+    // Converting marker pose from tf2 pose to Eigen datatypes
+    Eigen::Vector3f marker_position;
+    Eigen::Quaternionf marker_orientation_q;
+    ArucoTF::tf2TransformToEigen(tf_calibMarkerToWorld, marker_orientation_q,
+                                                               marker_position);
+    auto marker_orientation {marker_orientation_q.toRotationMatrix().eulerAngles(0, 1, 2)};
+
+    // Converting tool pose from tf2 pose to Eigen datatypes
+    Eigen::Vector3f tool_position;
+    Eigen::Quaternionf tool_orientation_q;
+    ArucoTF::tf2TransformToEigen(tf_toolToWorld, tool_orientation_q,
+                                                                 tool_position);
+    auto tool_orientation {tool_orientation_q.toRotationMatrix().eulerAngles(0, 1, 2)};
+
+    // Calculate the pose errors and store them
+    Eigen::VectorXf pose_error;
+    pose_error << (marker_position - tool_position), (marker_orientation - tool_orientation);
+
+    pose_errors.push_back(pose_error);
+
     sample_cnt++;
   }
   ROS_INFO_ONCE("Verification samples gathered");
