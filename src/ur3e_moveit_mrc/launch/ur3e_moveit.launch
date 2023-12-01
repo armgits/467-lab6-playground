@@ -13,15 +13,15 @@
   <!-- By default, we will load or override the robot_description -->
   <arg name="load_robot_description" default="false"/>
 
-  
+
   <!-- Choose controller manager: simple, or ros_control -->
   <!-- <arg name="moveit_controller_manager" default="ros_control" /> -->
-  
+
   <arg name="use_gui" default="false" />
   <arg name="use_rviz" default="true" />
 
   <!-- If needed, broadcast static tf for robot root -->
-  <node pkg="tf2_ros" type="static_transform_publisher" name="virtual_joint_broadcaster_0" args="0 0 0 0 0 0 world base_link" />
+  <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="virtual_joint_broadcaster_0" args="0 0 0.77 0 0 0 world base_link" /> -->
 
   <!-- Given the published joint states, publish tf for the robot links -->
   <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" /> -->
