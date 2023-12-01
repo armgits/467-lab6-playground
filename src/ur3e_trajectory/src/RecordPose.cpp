@@ -8,7 +8,7 @@ int main(int argc, char **argv)
     spinner.start();
     ros::NodeHandle nh;
     ros::Rate rate(2);
-    std::string out_path = "/home/user/workspace/src/moveit_tutorial/tutorial_pose.csv";
+    std::string out_path = "/home/terp-dev/enre467_ws/src/ur3e_trajectory/square_trajectory.csv";
 
     bool record_pose;
     int flag = 0;   
