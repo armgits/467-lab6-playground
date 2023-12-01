@@ -141,7 +141,11 @@ void DrawASquareXZ(double side_length, const geometry_msgs::Vector3& center_poin
     }
 
     // Adjust end-effector to the square center to begin drawing at
-    MoveBy(0.125, 0.1, -0.13, arm_move_group);
+    auto current_point {arm_move_group.getCurrentPose().pose.position};
+    auto adjust_x {center_point.x - current_point.x};
+    auto adjust_y {center_point.y - current_point.y};
+    auto adjust_z {center_point.z - current_point.z};
+    MoveBy(adjust_x, adjust_y, adjust_z, arm_move_group);
 
     std::string reference_frame {arm_move_group.getPlanningFrame()};
     geometry_msgs::Pose current_pose {arm_move_group.getCurrentPose().pose};
