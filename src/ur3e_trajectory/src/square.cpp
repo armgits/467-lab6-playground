@@ -27,7 +27,7 @@ geometry_msgs::Transform GetRobotBasePose()
     return transformStamped.transform;
 }
 
-bool MoveBy(double x, double y, double z,
+void MoveBy(double x, double y, double z,
                  moveit::planning_interface::MoveGroupInterface &arm_move_group)
 {
     std::string reference_frame {arm_move_group.getPlanningFrame()};
@@ -47,8 +47,6 @@ bool MoveBy(double x, double y, double z,
                                                       arm_move_group)};
 
     arm_move_group.execute(trajectory);
-
-    return true;
 }
 
 void DrawASquareXY(double side_length,
