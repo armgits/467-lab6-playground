@@ -208,9 +208,45 @@ int main(int argc, char **argv)
 
     //Write your code for following the square trajectory here.
 
+    auto robot_position {GetRobotBasePose().translation};
+
     // XY Plane
-    DrawASquareXY(0.25, planning_options, arm_move_group);
+    // Find the center and side length to draw the largest square
+    auto min_robot_reach_xy {robot_position};
+    min_robot_reach_xy.y += ROBOT_MIN_REACH_XY;
+
+    auto max_robot_reach_xy {robot_position};
+    max_robot_reach_xy.y += ROBOT_MAX_REACH_XY;
+
+    double work_radius_xy {max_robot_reach_xy.y - min_robot_reach_xy.y};
+    double side_length_xy {work_radius_xy * sin(60 * M_PI/180)};
+
+    auto center_point_xy {min_robot_reach_xy};
+    center_point_xy.y += side_length_xy / 2;
+
+    // Set the offset height from the table to draw the square
+    center_point_xy.z += 0.1;
+
+    ROS_INFO("Computed square side length XY: %f", side_length_xy);
+    DrawASquareXY(side_length_xy, center_point_xy, planning_options, arm_move_group);
 
     // XZ Plane
-    DrawASquareXZ(0.325,  planning_options, arm_move_group);
+    // Find the center and side length to draw the largest square
+    auto min_robot_reach_xz {robot_position};
+    min_robot_reach_xz.z += ROBOT_MIN_REACH_XZ;
+
+    auto max_robot_reach_xz {robot_position};
+    max_robot_reach_xz.z += ROBOT_MAX_REACH_XZ;
+
+    double work_radius_xz {max_robot_reach_xz.z - min_robot_reach_xz.z};
+    double side_length_xz {work_radius_xz * sin(60 * M_PI/180)};
+
+    auto center_point_xz {min_robot_reach_xz};
+    center_point_xz.z += side_length_xz / 2;
+
+    // Set an offset along Y-axis to prevent singularities
+    center_point_xz.y += ROBOT_MIN_REACH_XY + 0.1;
+
+    ROS_INFO("Computed square side length XZ: %f", side_length_xz);
+    DrawASquareXZ(side_length_xz, center_point_xz, planning_options, arm_move_group);
 }
