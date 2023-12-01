@@ -2,7 +2,7 @@
 
 ## Setup
 
-Make sure Docker and VSCode are installed on your computer.
+Make sure that Docker and VSCode are installed on your computer.
 
 Additional VSCode extensions required are:
 
