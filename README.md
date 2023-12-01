@@ -9,7 +9,7 @@ Additional VSCode extensions required are:
 - Dev Containers - [link](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 - Docker - [link](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
 
-Clone this repository to the home directory
+Clone this repository to `enre467_ws` folder in the home directory
 
 ```bash
 git clone -b armgits-playground https://github.com/armgits/467-playground.git enre467_ws
