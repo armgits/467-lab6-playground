@@ -2,7 +2,12 @@
 #include <tf2_ros/transform_listener.h>
 #include <geometry_msgs/TransformStamped.h>
 
-geometry_msgs::TransformStamped GetRobotBasePose()
+#define ROBOT_MIN_REACH_XY 0.235
+#define ROBOT_MAX_REACH_XY 0.57
+#define ROBOT_MIN_REACH_XZ 0.175
+#define ROBOT_MAX_REACH_XZ 0.6
+
+geometry_msgs::Transform GetRobotBasePose()
 {
     ros::NodeHandle robot_base_tf_subscriber;
 
