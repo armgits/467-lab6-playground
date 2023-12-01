@@ -24,7 +24,7 @@ geometry_msgs::Transform GetRobotBasePose()
       ROS_WARN("%s",ex.what());
     }
 
-    return transformStamped;
+    return transformStamped.transform;
 }
 
 bool MoveBy(double x, double y, double z,
