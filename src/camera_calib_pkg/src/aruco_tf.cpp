@@ -407,6 +407,13 @@ void ArucoTF::verifyCalibration(const int &marker_id) {
 
   // TODO: Once the errors are gathered, calculate sample mean vector and sample covariance matrix
 
+  // Sample mean error
+  Eigen::VectorXf mean_error;
+
+  for (auto pose_error: pose_errors) {
+    mean_error += pose_error;
+  }
+
 }
 
 int main(int argc, char **argv) {
