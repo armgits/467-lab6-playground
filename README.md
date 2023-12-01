@@ -15,8 +15,9 @@ Clone this repository to `enre467_ws` folder in the home directory
 git clone -b armgits-playground https://github.com/armgits/467-playground.git enre467_ws
 ```
 
-Open the repository folder in VSCode and **Reopen it in conatiner**. The container
-shall build and eventually start. First time takes some time.
+Open the repository folder in VSCode and **Reopen it in container**.
+Or [look at this](https://code.visualstudio.com/docs/devcontainers/containers#_quick-start-open-an-existing-folder-in-a-container) The container
+shall build and eventually start. It takes some time just for the first time.
 
 Once in the container, use the VSCode terminal to start a bash session
 (Do set the default profile as bash too) and do the remaining setup.
