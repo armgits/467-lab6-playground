@@ -414,6 +414,11 @@ void ArucoTF::verifyCalibration(const int &marker_id) {
     mean_error += pose_error;
   }
 
+  mean_error /= pose_errors.size();
+
+  ROS_INFO("Mean Error: ");
+  ROS_INFO_STREAM(mean_error);
+
   // Covariance matrix
   Eigen::MatrixXf F;
 
@@ -421,8 +426,14 @@ void ArucoTF::verifyCalibration(const int &marker_id) {
     F << pose_error;
   }
 
-  // auto covariance {(F - mean_error * )}
+  auto one_n_transpose {Eigen::RowVectorXf::Ones(pose_errors.size())};
+  auto covariance_matrix {
+    (1 / pose_errors.size() - 1)
+    * (F - mean_error * one_n_transpose)
+    * (F - mean_error * one_n_transpose).transpose()};
 
+  ROS_INFO("Covariance Matrix: ");
+  ROS_INFO_STREAM(covariance_matrix);
   //  TODO: CONTINUE FROM HERE
 }
 
