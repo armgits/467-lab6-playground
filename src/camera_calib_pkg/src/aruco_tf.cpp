@@ -379,11 +379,6 @@ void ArucoTF::verifyCalibration(const int &marker_id) {
     ArucoTF::lookup_markerToWorld();
     tf2::fromMsg(ArucoTF::tform_markerToWorld, tf_toolToWorld);
 
-    // Get tool pose in camera frame using lookup_camToMarker() function
-    // auto tf_camToMarker_geom {ArucoTF::lookup_camToMarker(ArucoTF::aruco_calib_target)};
-    // tf2::Transform tf_camToMarker;
-    // tf2::fromMsg(tf_camToMarker_geom, tf_camToMarker);
-
     // TODO: Calculate the 7 dimensional error (x,y,z,qx,qy,qz,qw) between the two
 
     // Converting marker pose (world) from tf2 pose to Eigen datatypes
@@ -392,12 +387,6 @@ void ArucoTF::verifyCalibration(const int &marker_id) {
     ArucoTF::tf2TransformToEigen(tf_calibMarkerToWorld, marker_orientation_world,
                                                         marker_position_world);
     // auto marker_orientation {marker_orientation_q.toRotationMatrix().eulerAngles(0, 1, 2)};
-
-    // Converting marker pose (camera) from tf2 pose to Eigen datatypes
-    // Eigen::Vector3f marker_position_cam;
-    // Eigen::Quaternionf marker_orientation_cam;
-    // ArucoTF::tf2TransformToEigen(tf_camToMarker, marker_orientation_cam,
-    //                                                        marker_position_cam);
 
     // Converting tool pose from tf2 pose to Eigen datatypes
     Eigen::Vector3f tool_position;
