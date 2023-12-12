@@ -411,7 +411,7 @@ void ArucoTF::verifyCalibration(const int &marker_id) {
   // Sample mean error
   Eigen::VectorXf mean_error {Eigen::VectorXf::Zero(7)};
 
-  for (auto pose_error: pose_errors) {
+  for (auto &pose_error: pose_errors) {
     mean_error += pose_error;
   }
 
