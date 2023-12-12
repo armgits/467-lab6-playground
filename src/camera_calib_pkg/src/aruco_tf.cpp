@@ -407,8 +407,9 @@ void ArucoTF::verifyCalibration(const int &marker_id) {
     // auto tool_orientation {tool_orientation_q.toRotationMatrix().eulerAngles(0, 1, 2)};
 
     // Calculate the pose errors and store them
-    Eigen::VectorXf pose_error;
-    pose_error << (marker_position - tool_position), (marker_orientation - tool_orientation);
+    Eigen::VectorXf pose_error {Eigen::VectorXf::Zero(7)};
+    pose_error << (tool_position - marker_position_world),
+                  (tool_orientation.coeffs() - marker_orientation_world.coeffs());
 
     pose_errors.push_back(pose_error);
 
