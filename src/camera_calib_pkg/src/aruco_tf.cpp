@@ -401,10 +401,10 @@ void ArucoTF::verifyCalibration(const int &marker_id) {
 
     // Converting tool pose from tf2 pose to Eigen datatypes
     Eigen::Vector3f tool_position;
-    Eigen::Quaternionf tool_orientation_q;
-    ArucoTF::tf2TransformToEigen(tf_toolToWorld, tool_orientation_q,
+    Eigen::Quaternionf tool_orientation;
+    ArucoTF::tf2TransformToEigen(tf_toolToWorld, tool_orientation,
                                                                  tool_position);
-    auto tool_orientation {tool_orientation_q.toRotationMatrix().eulerAngles(0, 1, 2)};
+    // auto tool_orientation {tool_orientation_q.toRotationMatrix().eulerAngles(0, 1, 2)};
 
     // Calculate the pose errors and store them
     Eigen::VectorXf pose_error;
