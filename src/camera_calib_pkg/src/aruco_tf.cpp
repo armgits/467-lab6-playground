@@ -393,6 +393,11 @@ void ArucoTF::verifyCalibration(const int &marker_id) {
                                                         marker_position_world);
     // auto marker_orientation {marker_orientation_q.toRotationMatrix().eulerAngles(0, 1, 2)};
 
+    // Converting marker pose (camera) from tf2 pose to Eigen datatypes
+    // Eigen::Vector3f marker_position_cam;
+    // Eigen::Quaternionf marker_orientation_cam;
+    // ArucoTF::tf2TransformToEigen(tf_camToMarker, marker_orientation_cam,
+    //                                                        marker_position_cam);
 
     // Converting tool pose from tf2 pose to Eigen datatypes
     Eigen::Vector3f tool_position;
